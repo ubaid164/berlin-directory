@@ -4,7 +4,6 @@ Upload all contents of this folder into the public web root, keeping filenames u
 
 Published pages:
 https://mickyberlingroupsl.ink/
-https://mickyberlingroupsl.ink/groups.html
 https://mickyberlingroupsl.ink/about.html
 https://mickyberlingroupsl.ink/faq.html
 
@@ -13,3 +12,5 @@ Keep the Google verification file permanently.
 Submit https://mickyberlingroupsl.ink/sitemap.xml in Google Search Console and inspect the four page URLs. Indexing depends on Google and is not guaranteed by these file changes.
 
 The 4 Telegram links are external listings, not additional pages on this domain. Group availability and activity must be checked in Telegram.
+
+Vercel redirects /groups.html to / with HTTP 301 via vercel.json. Group listings remain on /#groups.

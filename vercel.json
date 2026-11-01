@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/groups.html",
+      "destination": "/",
+      "statusCode": 301
+    }
+  ]
+}
