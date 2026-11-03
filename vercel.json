@@ -4,6 +4,11 @@
       "source": "/groups.html",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/faq.html",
+      "destination": "/#faq",
+      "statusCode": 301
     }
   ]
 }
