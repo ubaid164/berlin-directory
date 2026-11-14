@@ -12,6 +12,7 @@ POSTS = json.loads((ROOT / 'content/articles.json').read_text(encoding='utf-8-si
 assert len(POSTS) == 18 and len({p['slug'] for p in POSTS}) == 18
 TEMPLATE = (ROOT / 'blog.html').read_text(encoding='utf-8')
 esc = lambda text: html.escape(text, quote=True)
+SAFETY_NOTICE = 'Drug use can cause serious harm. This website does not promote drug sales and is not affiliated with Telegram, WhatsApp or external community operators. External content is controlled by its respective operators; we cannot guarantee its accuracy or safety.'
 
 
 def meta(source, key, value, prop=False):
@@ -35,6 +36,8 @@ def page(slug, title, description, main, schemas, kind='website', index=True, te
         data = json.dumps({'@context': 'https://schema.org', '@graph': schemas}, ensure_ascii=False).replace('<', '\\u003c')
         source = source.replace('</head>', '<script type="application/ld+json">' + data + '</script>\n</head>', 1)
     source = re.sub(r'<main[^>]*>.*?</main>', lambda match: main, source, count=1, flags=re.S)
+    source = re.sub(r'<p id="site-safety-notice"[^>]*>.*?</p>', '', source, flags=re.S)
+    source = source.replace('<footer>', '<footer><p id="site-safety-notice" style="max-width:900px;margin:0 auto 16px;padding:0 20px">' + esc(SAFETY_NOTICE) + '</p>', 1)
     return source.replace('href="favicon.svg"', 'href="/favicon.svg"')
 
 
@@ -122,6 +125,8 @@ for slug, title, description, kind in utilities:
     target = ROOT / slug
     source = target.read_text(encoding='utf-8')
     current_main = re.search(r'<main[^>]*>.*?</main>', source, re.S)[0]
+    if slug == 'disclaimer.html':
+        current_main = main('Disclaimer', '<h2>Safety notice</h2><p>Drug use can cause serious harm. This website does not promote drug sales or provide a service for arranging prohibited transactions.</p><h2>Independent website</h2><p>We are not affiliated with Telegram, WhatsApp, the City of Berlin or external community operators. Third-party communities are controlled by their respective administrators.</p><h2>Limits of the information</h2><p>The articles provide general information. We do not operate external communities or verify their members, messages, offers or transactions. We cannot guarantee the accuracy, availability or safety of third-party content.</p><h2>Report a concern</h2><p>Use our <a href="/contact.html">contact page</a> for a correction or removal request. For conduct within a third-party community, use its moderation or reporting process. Do not send passwords, login codes or identity documents.</p>')
     target.write_text(page(slug, title, description, current_main, [{'@type': kind, 'name': title, 'url': DOMAIN + '/' + slug, 'inLanguage': 'en'}], template=source), encoding='utf-8')
 
 # Obsolete redirect sources never appear in the sitemap.
