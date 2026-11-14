@@ -4,6 +4,43 @@
       "source": "/groups.html",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/faq.html",
+      "destination": "/#faq",
+      "statusCode": 301
+    },
+    {
+      "source": "/top-10-berlin-telegram-group-links.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mickyberlingroupsl.ink"
+        }
+      ],
+      "destination": "https://www.mickyberlingroupsl.ink/:path*",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

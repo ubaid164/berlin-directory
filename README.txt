@@ -1,16 +1,32 @@
-BERLIN TELEGRAM DIRECTORY
+BERLIN TELEGRAM DIRECTORY - COMMUNITY GUIDES
 
-Upload all contents of this folder into the public web root, keeping filenames unchanged.
+Repository: https://github.com/ubaid164/berlin-directory
+Website: https://www.mickyberlingroupsl.ink/
 
-Published pages:
-https://mickyberlingroupsl.ink/
-https://mickyberlingroupsl.ink/about.html
-https://mickyberlingroupsl.ink/faq.html
+The site has 19 editorial articles: 18 new guides and one revised existing guide.
+The homepage and blog hub link to the complete library in six topic clusters.
+No Telegram group invitations are currently listed. Removed groups remain removed.
 
-Check /robots.txt, /sitemap.xml, /sitemap_index.xml and /google178db51e898f702a.html after deployment.
-Keep the Google verification file permanently.
-Submit https://mickyberlingroupsl.ink/sitemap.xml in Google Search Console and inspect the four page URLs. Indexing depends on Google and is not guaranteed by these file changes.
+Published content is static HTML and deploys through the existing Vercel Git integration.
+All articles are available immediately. No scheduler, account token or deploy hook is needed.
 
-The 4 Telegram links are external listings, not additional pages on this domain. Group availability and activity must be checked in Telegram.
+To edit the new articles:
+1. Edit content/articles.json.
+2. Run python scripts/build-content.py from the repository folder.
+3. Run python scripts/validate-site.py.
+4. Review the diff, commit and push to the correct berlin-directory repository.
 
-Vercel redirects /groups.html to / with HTTP 301 via vercel.json. Group listings remain on /#groups.
+The saved source for the older choice guide is content/choice-guide-body.txt.
+Do not remove google178db51e898f702a.html or existing .well-known verification files.
+
+Canonical host, robots and sitemaps use www.mickyberlingroupsl.ink consistently.
+Vercel returns HTTP 301 for /groups.html, /faq.html, /index.html and the obsolete
+/top-10-berlin-telegram-group-links.html URL. The FAQ lives at /#faq.
+The 26-URL sitemap excludes redirected pages, verification files and the 404 page.
+
+After deployment, check the blog, representative article URLs, redirect responses,
+asset cache headers and sitemap. Submit the sitemap in Google Search Console.
+Indexing, Google's selected canonical and real mobile performance require separate checks.
+
+See TOPICAL-MAP.md for intent ownership and SEO-AUDIT.md for the completed work,
+research sources and limitations. No first-page ranking guarantee is made.

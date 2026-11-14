@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /content/
+Disallow: /scripts/
 
-Sitemap: https://mickyberlingroupsl.ink/sitemap.xml
+Sitemap: https://www.mickyberlingroupsl.ink/sitemap.xml
