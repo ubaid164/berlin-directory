@@ -48,6 +48,8 @@ Practical examples are illustrative and independently written for this website; 
 
 Passing local validation is not a statement that all SEO issues are cleared.
 
+Deployment check completed on 14 November 2026 after commit 9fb443f: all 18 new article URLs returned HTTP 200 with matching www canonicals. The homepage and blog returned HTTP 200; all 18 new posts were linked from the hub. The live sitemap contained 26 URLs. The groups, FAQ, former numbered-list and index.html routes returned HTTP 301 to their intended destinations. A deliberately missing URL returned HTTP 404. The shared background and a local font returned HTTP 200 with public, max-age=31536000, immutable. The Google verification file remained available with HTTP 200. Initial transient TLS errors during the first check cleared on retry; those failed requests were not counted as successful checks.
+
 - Confirm the deployed article pages, canonical host, 301 rules, asset cache headers and unknown-route 404 response after pushing.
 - Search Console access is required to verify Google's selected canonical, indexing status, manual actions and query/country/device performance. Use Germany for the country dimension; Berlin is the city focus.
 - Submit the www sitemap and inspect representative pages. Sitemap inclusion does not guarantee indexing.
