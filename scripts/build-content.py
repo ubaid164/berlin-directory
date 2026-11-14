@@ -93,6 +93,11 @@ faqs = [
     ('How can I request a correction?', 'Use the contact page and include the page address, the detail you believe is wrong and a source for the correction. Do not send passwords or private documents.'),
 ]
 hero = '<section class="hero"><div class="wrap"><div class="pill">Berlin community guides · Germany</div><h1>Berlin Telegram <span>Group Links</span></h1><p>Looking for Berlin Telegram group links? Use our guides to understand invitations, compare communities and ask useful local questions. No group invitations are currently listed on this website.</p><div class="hero-actions"><a class="btn" href="/blog.html">Explore the community guides</a><a class="btn alt" href="#faq">Common questions</a></div></div></section>'
+contact_source = (ROOT / 'contact.html').read_text(encoding='utf-8')
+whatsapp = re.search(r'href="(https://wa\.me/[0-9]+)"', contact_source)
+assert whatsapp, 'The existing WhatsApp contact must be present before adding the button.'
+whatsapp_button = '<a class="btn" href="' + whatsapp[1] + '" target="_blank" rel="noopener noreferrer" aria-label="Contact Berlin Telegram Directory on WhatsApp" data-en="Chat on WhatsApp" data-de="Auf WhatsApp schreiben">Chat on WhatsApp</a>'
+hero = hero.replace('</div></div></section>', whatsapp_button + '</div></div></section>', 1)
 status = '<section id="groups"><div class="wrap"><div class="section-title"><h2>Current listing status</h2><p>There are no Telegram group listings to join here at present.</p></div><div class="content" lang="en"><p>We have kept removed invitations out of the directory. An old article, a familiar community name or a topic suggestion should not be mistaken for a checked group link.</p><p>If an organiser shares an invitation elsewhere, check its current Telegram preview and read the community rules. Start with our <a href="/joining-a-berlin-telegram-community.html">invitation checklist</a> or <a href="/how-to-choose-berlin-telegram-group.html">guide to comparing communities</a>.</p></div></div></section>'
 guides = '<section id="guides"><div class="wrap"><div class="section-title"><h2>Practical guides for Berlin community members</h2><p>Choose the question you need to answer, rather than joining more chats without a purpose.</p></div><div class="grid">'
 for label, items in clusters.items():
