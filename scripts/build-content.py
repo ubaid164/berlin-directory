@@ -2,6 +2,7 @@
 from pathlib import Path
 import html
 import json
+import hashlib
 import re
 import xml.etree.ElementTree as ET
 
@@ -13,6 +14,15 @@ assert len(POSTS) == 18 and len({p['slug'] for p in POSTS}) == 18
 TEMPLATE = (ROOT / 'blog.html').read_text(encoding='utf-8')
 esc = lambda text: html.escape(text, quote=True)
 SAFETY_NOTICE = 'Drug use can cause serious harm. This website does not promote drug sales and is not affiliated with Telegram, WhatsApp or external community operators. External content is controlled by its respective operators; we cannot guarantee its accuracy or safety.'
+POPUP_CSS = (ROOT / 'content/safety-popup.css').read_text(encoding='utf-8')
+POPUP_JS = (ROOT / 'content/safety-notice.js').read_bytes()
+POPUP_ASSET = 'safety-notice-' + hashlib.sha256(POPUP_JS).hexdigest()[:12] + '.js'
+(ROOT / 'assets' / POPUP_ASSET).write_bytes(POPUP_JS)
+POPUP_HTML = '''<dialog id="safety-popup" class="safety-popup" aria-labelledby="safety-popup-title" aria-describedby="safety-popup-description">
+<svg class="safety-art" viewBox="0 0 170 110" aria-hidden="true"><ellipse cx="85" cy="98" rx="63" ry="7" fill="#d7e6cb"/><circle cx="85" cy="52" r="44" fill="#d8e9c9"/><path d="M22 87V65h12v22m7 0V53h12v34m72 0V61h10v26m7 0V71h9v16" fill="none" stroke="#739275" stroke-width="3"/><path d="M54 31L85 18l31 13v23c0 21-15 33-31 40-16-7-31-19-31-40z" fill="#205331"/><path d="M72 53l9 9 20-22" fill="none" stroke="#d8f7b1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 28v12m-6-6h12m108-15v10m-5-5h10" stroke="#a593bf" stroke-width="3" stroke-linecap="round"/><circle cx="139" cy="46" r="4" fill="#a593bf"/></svg>
+<p class="safety-eyebrow">A moment for safety</p><h2 id="safety-popup-title">Before you continue</h2>
+<div id="safety-popup-description"><p class="safety-warning">Drug use can cause serious harm.</p><p>This is an independent information website. We are not affiliated with Telegram or WhatsApp, and we do not verify or endorse third-party communities, offers or transactions.</p><p>Never share passwords, login codes or sensitive documents.</p></div>
+<div class="safety-actions"><button type="button" data-safety-understand autofocus>I Understand</button><button type="button" data-safety-back>Go Back</button></div></dialog>'''
 
 
 def meta(source, key, value, prop=False):
@@ -38,6 +48,13 @@ def page(slug, title, description, main, schemas, kind='website', index=True, te
     source = re.sub(r'<main[^>]*>.*?</main>', lambda match: main, source, count=1, flags=re.S)
     source = re.sub(r'<p id="site-safety-notice"[^>]*>.*?</p>', '', source, flags=re.S)
     source = source.replace('<footer>', '<footer><p id="site-safety-notice" style="max-width:900px;margin:0 auto 16px;padding:0 20px">' + esc(SAFETY_NOTICE) + '</p>', 1)
+    source = re.sub(r'<style id="safety-popup-styles">.*?</style>\n?', '', source, flags=re.S)
+    source = source.replace('</head>', '<style id="safety-popup-styles">' + POPUP_CSS + '</style>\n</head>', 1)
+    source = re.sub(r'<dialog id="safety-popup".*?</dialog>', '', source, flags=re.S)
+    source = re.sub(r'<script defer src="/assets/safety-notice-[a-f0-9]+\.js"></script>', '', source)
+    source = re.sub(r'<button type="button" class="safety-reopen" data-open-safety-notice>Safety notice</button>', '', source)
+    source = source.replace('</footer>', '<button type="button" class="safety-reopen" data-open-safety-notice>Safety notice</button></footer>', 1)
+    source = source.replace('</body>', POPUP_HTML + '<script defer src="/assets/' + POPUP_ASSET + '"></script></body>', 1)
     return source.replace('href="favicon.svg"', 'href="/favicon.svg"')
 
 
